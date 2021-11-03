@@ -1,8 +1,17 @@
-﻿#include <iostream>
+﻿#include <fstream>
 #include <Windows.h>
 #include <WinInet.h>
 #pragma comment(lib, "WinInet.lib")
 #include <memory>
+
+/*
+ 呼び出し規約 calling convention
+BOOL __stdcall InternetCloseHandle(_In_ HINTERNET hInternet);
+
+BOOL (__stdcall* )(_In_ HINTERNET hInternet)
+decltype(InternetCloseHandle)*
+
+*/
 
 namespace RAII {
 	typedef std::unique_ptr<std::remove_pointer_t<::HINTERNET>, decltype(InternetCloseHandle)*> HINTERNET;
@@ -24,6 +33,7 @@ int main()
 			, /*_In_                            DWORD     dwFlags        */0
 			, /*_In_opt_                        DWORD_PTR dwContext      */0
 			), InternetCloseHandle }) {
+			std::ofstream file("test2.csv", std::ios_base::binary);
 			char buf[8192];
 			DWORD cbRead;
 			while (InternetReadFile
@@ -33,7 +43,7 @@ int main()
 			, /*_Out_                                                                LPDWORD   lpdwNumberOfBytesRead*/&cbRead
 			)) {
 				if (cbRead)
-					std::cout.write(buf, cbRead);
+					file.write(buf, cbRead);
 				else
 					break;
 			}
