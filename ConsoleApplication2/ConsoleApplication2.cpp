@@ -82,7 +82,7 @@ int main()
 		Download(InternetOpenUrlA("https://aka.ms/vs/17/release/vc_redist.x64.exe"), std::ofstream("vc_redist.x64.exe", std::ios_base::binary));
 	}
 	catch (const std::exception& e) {
-		//エラーが発生した時は出力ウィンドウをstd::cerrにメッセージを出力する
+		//エラーが発生した時は出力ウィンドウとstd::cerrにメッセージを出力する
 		OutputDebugStringA(e.what());
 		OutputDebugStringA("\n");
 		std::cerr << e.what() << '\n';
